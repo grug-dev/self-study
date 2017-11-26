@@ -13,7 +13,7 @@ import kkpa.protocolo.constantes.IRespuestas;
  * @author RaspuWIN7
  *
  */
-public class ProtocoloServer {
+public class InterpretacionMsjSocket {
     
     
     public static String getMensaje(String msgSocket) {
@@ -88,34 +88,6 @@ public class ProtocoloServer {
         
         return respuesta;
         
-    }
-    
-    public static String getFormatoMsjRespuesta(Integer key, String... params) {
-        String fmtProtocoloRta = null;
-        
-        if (key == null) {
-            return null;
-        }
-        
-        fmtProtocoloRta = IRespuestas.OK;
-        
-        switch (key) {
-        case IRespuestas.MSJ:
-            fmtProtocoloRta += IProtocolo.TOKEN_MSJ + params[0];
-            break;
-        case IRespuestas.NUM_SUBSCRITO:
-            break;
-        case IRespuestas.OFFLINE:
-            break;
-        case IRespuestas.ONLINE:
-            break;
-        case IRespuestas.READ:
-            break;
-        case IRespuestas.WRITING:
-            break;
-        }
-        
-        return fmtProtocoloRta;
     }
     
 }

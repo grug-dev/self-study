@@ -13,7 +13,7 @@ import kkpa.chat.cliente.presentacion.VistaInscripcion;
  * @author ccpena
  *
  */
-public class LauncherClient {
+public class Launcher {
 
 	/**
 	 * @param args

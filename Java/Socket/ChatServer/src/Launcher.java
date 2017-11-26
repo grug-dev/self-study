@@ -1,4 +1,4 @@
-import kkpa.chat.servidor.Servidor;
+import kkpa.chat.servidor.Subscripcion;
 
 /**
  * 
@@ -10,14 +10,14 @@ import kkpa.chat.servidor.Servidor;
  * @author ccpena
  *
  */
-public class LauncherServidor {
+public class Launcher {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		
-		Servidor serverChat = Servidor.getInstance();
+		Subscripcion serverChat = Subscripcion.getInstance();
 		
 		serverChat.lanzar();
 		

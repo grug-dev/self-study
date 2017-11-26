@@ -18,10 +18,10 @@ import kkpa.protocolo.constantes.IProtocolo;
 import kkpa.protocolo.constantes.IRespuestas;
 
 /**
- * @author RaspuWIN7
+ * @author ccpena
  *
  */
-public class Servidor {
+public class Subscripcion {
 
 	
 	private static ServerSocket servidor;
@@ -30,10 +30,10 @@ public class Servidor {
 	
 	private Map<String, Socket> mapClientes;
 	
-	private static Servidor servidorChat;
+	private static Subscripcion servidorChat;
 	
 	
-	private Servidor() {
+	private Subscripcion() {
 		buscarClientes = true;
 		mapClientes = new HashMap<String, Socket>();
 	}
@@ -53,13 +53,13 @@ public class Servidor {
 				DataInputStream in2 = new DataInputStream(usuario.getInputStream());
 				mensaje = in2.readUTF();
 				
-				mensaje = ProtocoloServer.getMensaje(mensaje);
+				mensaje = InterpretacionMsjSocket.getMensaje(mensaje);
 				
 				if (mensaje.startsWith(IComandos.SUBSCRIBIR)) {
 					String rta[] = mensaje.split(IProtocolo.TOKEN_MSJ);
 					String idUsuario = rta[1];
 					mapClientes.put(idUsuario, usuario);
-					executor.execute(new RecibirMsjServidor(usuario)); 	
+					executor.execute(new AdminPeticiones(usuario)); 	
 					
 					String msg = IRespuestas.OK + IProtocolo.TOKEN_MSJ + IRespuestas.USERS_ONLINE;
 					for (String idUser : mapClientes.keySet()) {
@@ -85,9 +85,9 @@ public class Servidor {
 	}
 	
 	
-	public static Servidor getInstance() {
+	public static Subscripcion getInstance() {
 		if (servidorChat == null) {
-			servidorChat = new Servidor();
+			servidorChat = new Subscripcion();
 		}
 		return servidorChat;
 	}

@@ -88,7 +88,7 @@ public class VistaUsuario extends JFrame {
 			mensaje += IProtocolo.TOKEN_MSJ+"SERVER";
 			mensaje += IProtocolo.TOKEN_MSJ+"Subscribiendo";
 			out.writeUTF(mensaje);
-			executor.execute(new RecibirMsjCliente(cliente, this));
+			executor.execute(new ReceptorMensajes(cliente, this));
 
 			executor.shutdown();
 		} catch (UnknownHostException e) {

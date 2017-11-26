@@ -14,7 +14,7 @@ import kkpa.protocolo.constantes.IRespuestas;
  * @author RaspuWIN7
  *
  */
-public class RecibirMsjCliente implements Runnable {
+public class ReceptorMensajes implements Runnable {
 
 	private Socket usuarioReceptor;
 
@@ -24,7 +24,7 @@ public class RecibirMsjCliente implements Runnable {
 
 	private static final String TOKEN_RTA = "###";
 
-	public RecibirMsjCliente(Socket usuario, VistaUsuario vistaUsuario) {
+	public ReceptorMensajes(Socket usuario, VistaUsuario vistaUsuario) {
 		this.usuarioReceptor = usuario;
 		this.vistaUsuario = vistaUsuario;
 	}
