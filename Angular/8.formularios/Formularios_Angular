@@ -1,0 +1,155 @@
+* pristine = Esta<do Inicial de los elementos del Template (ngclass)
+* Importar FormsModule @angular/forms en el app.module.ts
+* En el <form> para que no valide por default los required de HTML5 se pone: <form novalidate>
+* [(ngModel)]="usuario.nombre"   => (Cuando està con la caja de banana, si se actualiza el modelo en TS. Sin la caja banana, no se actualiza.)
+* Para que se vea en rojo los invalidos, sorbeescribimos el class ng-invalid
+  Se pone not(form) para q no tome el formulario como invalido.
+
+    styles: [`
+      .ng-invalid.ng-touched:not(form) {
+        border: 1px solid red;
+      }
+      `]
+
+* Para mostrar mensaje por la razon invalidad se puede hacer de la sgte forma:
+  <input class="form-control" type="text" placeholder="Nombre" name="nombre" [(ngModel)]="usuario.nombre" #nombre="ngModel" required minlength="3">
+
+    <div *ngIf="nombre.errors?.required">
+      Este campo es requerido
+    </div>
+    <div *ngIf="nombre.errors?.minlength">
+      Longitud Invalida. Minimo {{ nombre.errors.minlength.requiredLength }} caracteres
+    </div>
+
+
+    1. Aproximacion por Template
+
+En el manejo de los formularios por el Template, ¿Angular crea el ngForm por nosotros en caso de que la necesitemos?
+Verdadero
+
+Si utilizamos el ngModel en un input, ¿qué debemos importar en el módulo?
+FormsModule
+
+- En module.ts se debe import import { FormsModule } from '@angular/forms'
+
+      - Creamos un alias para el Formulario completo. #forma="ngForm"
+      <form (ngSubmit)="guardar(forma)" #forma="ngForm">
+
+      - En ts, importarmos ngForm para recibir #forma
+      import { NgForm } from '@angular/forms';
+
+      - El archivo TS queda casi limpio. Lo unico es para lecetura de datos.
+      - El archivo Template (HTML) tiene TODA la lógica de validación.
+- EL uso de ngModel siempre debe tener name el div
+
+    2. Aproximacion por DATA
+
+    //FormData En el archivo app.module.ts
+    import { ReactiveFormsModule } from '@angular/forms';
+
+
+    1. Las reglas de validacion se hacen con Validators from @angular/forms
+        - Validators.required
+        - Validators.email
+
+
+
+    ************ TS *************************
+    - En TS Importamos: FormControl, FormGroup, Validator
+      import { FormControl, FormGroup , Validatord} from '@angular/forms';
+
+    - cREAMOS OBJETO FORMULARIO
+
+      // Objeto Forma
+      forma:FormGroup;
+    - En constructor definimos las variables
+    this.forma = new FormGroup({
+      'nombrecompleto': new FormGroup({
+        'nombre': new FormControl('', [Validators.required, Validators.minLength(3)]),
+        'apellido': new FormControl('', [Validators.required, this.noHerrera])
+      }),
+      'email': new FormControl('', [Validators.required]),
+      'pasatiempos': new FormArray([
+        new FormControl('Correr', Validators.required),
+        new FormControl('Comer', Validators.required)
+      ]),
+      'pass1': new FormControl('', Validators.required),
+      'pass2': new FormControl(),
+      'user': new FormControl('', Validators.required, this.existeUsuario)
+    })
+
+      // Otro ejemplo pero dolo cabeza
+      'email': new FormControl(this.usuario.correo, [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")])
+
+      pero se puede setear todo en un mismo Objeto
+      // Si 1 tiene la misma estructura que this.usuario, se puede hacer esto.
+      this.forma.setValue(this.usuario);
+
+      // Reestablecer al objeto ng-pristine!!
+      /*
+      this.forma.reset({
+        nombrecompleto: {
+          nombre: "",
+          apellido: ""
+        },
+        correo: ""
+      });
+      */
+
+      })
+
+    *************  template ************
+
+    1. Definir el objeto TS del FORM
+    <form (ngSubmit)="guardarCambios()" [formGroup]="forma" novalidate>
+
+    2. Definir el objeto FormControl del cmapo del FormGroup
+    formControlName="nombre"
+
+      <input class="form-control" type="email" placeholder="Correo electrónico" formControlName="email">
+    <div *ngIf="forma.controls['nombrecompleto'].get('nombre').errors?.required" class="form-control-feedback">
+
+    3. FormArray
+
+    <div class="col-md-8" formArrayName="pasatiempos">
+
+  ******** BIND ***********
+  Para definir el "this" dentro de una funciòn Validators
+
+****** Validadores Personalizada
+    'apellido': new FormControl('', [Validators.required, this.noHerrera])
+    this.forma.controls['pass2'].setValidators([Validators.required, this.passDiferents.bind(this.forma)]);
+
+*******  Validadores Asincronos.
+    import { Observable } from 'rxjs/Rx';
+
+    El 3 parametro de FormControl es "Asyncrono"
+    'user': new FormControl('', Validators.required, this.existeUsuario)
+
+    La función debe ser así:
+    XZXXX (control : FormControl) : Promise<any>|Observable<any> {
+
+    Todo lo que devuelva un obsrevable se puede subscribir.
+
+    existeUsuario(control: FormControl): Promise<any> | Observable<any> {
+      console.log("Existe Usuario .. .. ");
+      let promesa = new Promise(
+        (resolve, reject) => {
+          setTimeout(() => {
+            if (control.value == "strider") {
+              resolve({ existe: true })
+            } else {
+              resolve(null)
+            }
+          }, 3000)
+        }
+      )
+      return promesa;
+    }
+
+********** Eventos ************
+1. Se crea un observador ( constructor)
+
+this.forma.controls['email'].valueChanges.subscribe(data => {
+  console.log(data);
+})
