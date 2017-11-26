@@ -2,12 +2,10 @@
 
 Simple games projects in order to apply MVC Pattern.
 
-
-##Sudoku
+## Sudoku
 
 [README](Sudoku/README.md)
 
-
-##Solitario
+## Solitario
 
 [README](Solitario/README.md)
