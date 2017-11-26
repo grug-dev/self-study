@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Lista de pendientes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-grid *ngIf=" (listaDeseosServices.listas | pendientes).length == 0">
+        <ion-row>
+          <ion-col class="text-center caja-gris">
+            <ion-icon class="icono-grande" ios="ios-sunny" md="md-sunny" ></ion-icon>
+            <p> No hay ninguna Lista
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+
+  <ion-card *ngFor="let deseos of listaDeseosServices.listas | pendientes ; let i = index">
+
+    <ion-item color="primary" (click)="verDetalle(deseos, i)">
+        <h2> {{ deseos.nombre }} </h2>
+        <ion-note item-right>
+          {{ deseos.items.length}} items 
+        </ion-note>
+    </ion-item>
+
+    
+    <ion-list>      
+      <ion-item (click)="verDetalle(deseos, i)" *ngFor="let items of deseos.items | slice:0:2">
+        <!-- Advanced: explicity set the icon for each platform -->
+        <ion-icon *ngIf="!items.terminado" ios="ios-square-outline" md="md-square-outline"> {{ items.nombre }}</ion-icon>
+        <ion-icon *ngIf="items.terminado" ios="ios-checkbox" md="md-checkbox"> {{ items.nombre }} </ion-icon>        
+      </ion-item>
+       
+      <ion-item style="text-align:center" color="primary" *ngIf="deseos.items.length > 2">
+          <ion-icon ios="ios-arrow-dropdown-circle" md="md-arrow-dropdown-circle"></ion-icon>
+      </ion-item>
+     
+    </ion-list>
+
+  </ion-card>
+
+  <ion-fab right bottom>
+      <button ion-fab color="primary" (click)="irAgregar()">  <ion-icon ios="ios-add" md="md-add"></ion-icon></button>      
+    </ion-fab>
+  
+
+</ion-content>

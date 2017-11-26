@@ -1,0 +1,57 @@
+<div *ngIf="artista" class="container maing-container animated fadeIn fast">
+
+
+  <div class="row">
+
+    <div class="col-md-3 text-center">
+      <img [src]=" artista.images | sinfoto" class="img-circle img-thumbnail ">
+      <br>
+    </div>
+
+    <div class="col-md-9 ">
+      <h3>  {{ artista.name }} <small> Popularidad {{ artista.popularity }}</small></h3>
+      <hr>
+      <a target="_blank" [href]=" artista.external_urls?.spotify" class="btn btn-outline-success"> Ver Pagina </a>
+      <button type="button" name="button" class="btn btn-outline-danger" (click)="regresar()"> Regresar</button>
+
+
+    </div>
+  </div>
+
+
+  <h3> Top de {{ artista.name }} </h3>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-inverse table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Foto</th>
+              <th>Cancion</th>
+              <th>Popularidad</th>
+              <th>Preview</th>
+            </tr>
+            <tr *ngFor="let track of topTracks ; let i = index;">
+              <td class="text-center"> {{ i + 1 }}</td>
+              <td> <img [src]=" track.album.images | sinfoto " class="img-fluid img-50" alt="..."> </td>
+              <td> {{ track.name }} </td>
+              <td class="text-center"> {{ track.popularity }} </td>
+              <td>
+                <iframe [src]=" track.uri | domseguro: 'https://embed.spotify.com/?uri='" width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+                <audio controls>
+                    <source [src]="track.preview_url">
+                    Tu navegador es muy viejo!
+                </audio>
+              </td>
+            </tr>
+          </thead>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>

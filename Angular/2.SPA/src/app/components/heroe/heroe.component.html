@@ -1,0 +1,34 @@
+<h1> {{heroe.nombre  | uppercase }} <small> ( {{ heroe.aparicion | date: 'y' }} )</small></h1>
+
+<div class="row animated fadeIn fast">
+
+  <div class="col-md-4" styleClass="border: 1px">
+
+    <img [src]="heroe.img" class="img-fluid pull-xs-left" [alt]="heroe.nombre">
+
+    <br><br>
+
+    <a [routerLink]="['/heroes']"  class="btn btn-outline-danger btn-block"> Regresar </a>
+
+  </div>
+
+  <div class="col-md-8">
+      <h3>{{heroe.nombre}}</h3>
+
+      <hr>
+      <p>
+        {{ heroe.bio}}
+      </p>
+
+      <div *ngIf="heroe.casa == 'DC'; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+          <img src="assets/img/marvel.png" class="img-fluid pull-xs-left" styleClass="width : 120px" alt="...">
+      </ng-template>
+
+      <ng-template #elseBlock>
+        <img src="/assets/img/dc.jpg" class="img-fluid pull-xs-left"  styleClass="width : 120px" alt="...">
+      </ng-template>
+
+  </div>
+
+</div>

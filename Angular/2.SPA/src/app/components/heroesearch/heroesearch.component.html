@@ -1,0 +1,35 @@
+
+<h1>Buscando a: <small> {{ strHeroe }}</small></h1>
+
+<hr>
+
+<div *ngIf="heroes.length == 0" class="row">
+  <div class="col-md-12">
+
+    <div class="alert alert-warning" role="alert">
+        No existen resultados
+    </div>
+  </div>
+</div>
+
+<div class="card-columns">
+
+  <div class="card animated fadeIn fast" *ngFor="let vbleHeroe of heroes; let i = index">
+    <img class="card-img-top img-fluid" [src]="vbleHeroe.img" [alt]="vbleHeroe.nombre">
+    <div class="card-block">
+      <h4 class="card-title">{{ vbleHeroe.nombre }}</h4>
+      <p class="card-text"> {{ vbleHeroe.bio}}</p>
+      <p class="card-text"><small class="text-muted"> {{ vbleHeroe.aparicion }}</small></p>
+
+
+      <button (click)="verHeroe(i)"
+        type="button" class="btn btn-outline-primary btn-block">
+        Ver más...
+      </button>
+
+    <a [routerLink]="['/heroe',i]"  class="btn btn-outline-primary">Ver más Link </a>
+
+    </div>
+  </div>
+
+</div>
