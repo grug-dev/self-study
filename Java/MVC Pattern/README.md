@@ -9,3 +9,5 @@ Simple games projects in order to apply MVC Pattern.
 ##Solitario
 
 [README](Solitario/README.md)
+
+
