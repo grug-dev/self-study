@@ -13,7 +13,6 @@ public class AppDeadLock {
       try {
         runner.firstThread();
       } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
     };
@@ -21,7 +20,6 @@ public class AppDeadLock {
       try {
         runner.secondThread();
       } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
     };

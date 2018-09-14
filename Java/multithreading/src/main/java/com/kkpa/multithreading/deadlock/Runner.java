@@ -48,7 +48,6 @@ public class Runner {
       try {
         acquireLocks(lock1, lock2);
       } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
       try {
@@ -66,7 +65,6 @@ public class Runner {
       try {
         acquireLocks(lock2, lock1);
       } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
 
@@ -80,8 +78,7 @@ public class Runner {
   }
 
   public void finished() {
-    System.out.println("Account 1 Balance: " + acc1.balance + "\t" + "Account 2 Balance: "
-        + acc2.balance + " Total Balance: " + (acc1.balance + acc2.balance));
+    System.out.println("Account 1 Balance: " + acc1.balance + "\t" + "Account 2 Balance: "  + acc2.balance + " Total Balance: " + (acc1.balance + acc2.balance));
 
   }
 }
