@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Data;
 
 @Data
 @Entity
+@JsonFilter("UserAgeFilter")
 public class User implements Serializable {
 
 
@@ -21,7 +25,10 @@ public class User implements Serializable {
   }
 
   @Id
+  @NotNull
   private Long id;
+
+  @Size(min = 10, message = "Name should have atleast 10 characteres")
   private String name;
   private int age;
   private LocalDate birthDate = LocalDate.now();

@@ -1,4 +1,4 @@
-package com.kkpa.java8study;
+package com.kkpa.java8;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
