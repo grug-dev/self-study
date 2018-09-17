@@ -7,48 +7,47 @@ import java.util.stream.IntStream;
 
 class Processor implements Runnable {
 
-  private CountDownLatch latch;
-  private int count = 0;
+	private CountDownLatch latch;
+	private int count = 0;
 
-  public Processor(CountDownLatch latch, int i) {
-    this.latch = latch;
-    this.count = i;
-  }
+	public Processor(CountDownLatch latch, int i) {
+		this.latch = latch;
+		this.count = i;
+	}
 
-  public void run() {
-    System.out.println("Started " + this.count);
+	public void run() {
+		System.out.println("Started " + this.count + " - LatchCount: " + latch.getCount() + " Thread: "
+				+ Thread.currentThread().getName());
 
-    try {
-      Thread.sleep(3000l);
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+		try {
+			Thread.sleep(3000l);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-    latch.countDown();
-    System.out.println(" Count Down " + this.count);
-  }
+		latch.countDown();
+		System.out.println("Winds Up " + this.count + " - LatchCount: " + latch.getCount() + " Thread: "
+				+ Thread.currentThread().getName());
+	}
 }
-
 
 public class AppCountDownLatch {
 
-  public static void main(String[] args) throws InterruptedException {
-    CountDownLatch latch = new CountDownLatch(2);
+	public static void main(String[] args) throws InterruptedException {
+		CountDownLatch latch = new CountDownLatch(2);
 
-    ExecutorService executor = Executors.newFixedThreadPool(4);
+		ExecutorService executor = Executors.newFixedThreadPool(4);
 
-    IntStream.range(0, 8).forEach(i -> {
-      executor.submit(new Processor(latch, i));
-    });
+		IntStream.range(0, 8).forEach(i -> {
+			executor.submit(new Processor(latch, i));
+		});
 
-    latch.await();
+		latch.await();
 
-    System.out.println("Completed");
-    executor.shutdown();
+		System.out.println("Completed");
+		executor.shutdown();
 
-  }
-
-
+	}
 
 }
