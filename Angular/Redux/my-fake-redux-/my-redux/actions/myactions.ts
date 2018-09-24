@@ -1,6 +1,5 @@
 import { ActionFactory } from "../ActionFactory";
 import { ActionType } from "../ActionType";
-import { contadorReducer } from '../contador.reducer';
 import { State } from "../State";
 
 let oldState : State = {
@@ -10,9 +9,6 @@ let oldState : State = {
 export let incrementActionType : ActionType = {
     type : ActionFactory.INCREMENT_ACTION
 }
-
-export let incrementAction = contadorReducer( this.oldState , incrementActionType );
-
 
 export let decrementActionType : ActionType = {
     type : ActionFactory.DECREMENTAR_ACTION 

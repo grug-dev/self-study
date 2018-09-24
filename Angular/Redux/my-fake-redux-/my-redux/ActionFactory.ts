@@ -18,6 +18,7 @@ export class ActionFactory {
     }
 
     getAction():Action {
+        console.log("Factory my Type: " + this.action.type);
         switch ( this.action.type) {
             case ActionFactory.INCREMENT_ACTION:
                 return new IncrementerAction(this.action.payload);
