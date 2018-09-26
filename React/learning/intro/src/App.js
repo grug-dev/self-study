@@ -1,27 +1,70 @@
 import React, { Component } from 'react';
-//import logo from './logo.svg';
 import './App.css';
+import ValidationComponent from './components/task2/ValidationComponent';
+import CharComponent from './components/task2/CharComponent';
 
-var itinerario = [
-  { id: 1,  ciudad: 'Barcelona', dias: 3 },
-  { id: 2, ciudad: 'Madrid', dias: 5 },
-  { id: 3, ciudad: 'Paris', dias: 2 } , 
-  { id: 4,  ciudad: 'Barcelona', dias: 2 },
-];
+
 
 class App extends Component {
+
+  state = {
+    length : '',
+    currentValue : ''
+  }
   
   render() {
-    return React.createElement('ul', null,
-        itinerario.map(function(item) {
-         return React.createElement(
-                        'li', 
-                        { key : item.id},
-                        'Ciudad ', item.ciudad, ', quedándonos ', item.dias, ' días'
-      );
-    })
-  );
+
+    let mycharacters ;
+
+    const currentValue = this.state.currentValue;
+    if (currentValue.length > 0) {
+      mycharacters = currentValue.split('').map( (l , index) => {
+        console.log(index, l);
+        return <CharComponent letter={l}
+         key={index}
+         deleteCharacter={ () => this.deleteCharacter(index)}
+         />         
+      });    
+    }    
+    
+
+    return(
+      <div className="myApp">
+        <input type="text" onChange={this.changeInputHandler} value={this.state.currentValue} /> 
+        <label><p>{this.state.length}</p></label>
+        <ValidationComponent  length = {this.state.length}/>    
+        { mycharacters }
+      </div>      
+    );
   }
+
+  deleteCharacter =  (index) => {
+    const X = this.state.currentValue.split('');
+    X.splice(index , 1);
+    const text = X.join('');
+    const length = text.length;
+    this.setState({
+      currentValue : text ,
+      length : length
+    }
+      
+    );
+  }
+
+  changeInputHandler = (event) => {
+    const currentValue = event.target.value;
+    let length = '';
+    if ( currentValue){
+      length = event.target.value.length;      
+    }
+      
+    this.setState({
+      length : length ,
+      currentValue : currentValue
+    });
+  }
+
+
 }
 
 export default App;

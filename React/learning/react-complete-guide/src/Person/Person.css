@@ -1,0 +1,12 @@
+.Person {
+    width: 30%;
+    margin: auto;
+    border: 1px solid rgb(57, 139, 37);
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 2px 3px rgb(172, 39, 39); 
+}
+
+.PersonClicked {
+    cursor: pointer;
+}

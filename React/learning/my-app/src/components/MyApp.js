@@ -1,11 +1,14 @@
 import React , { Component} from 'react';
 import Table from './Table';
 import Form from './Form';
+import UserInput from './UserInput';
+import UserOutput from './UserOutput';
 
 class MyApp extends Component {
 
     state = {
-        characters : []
+        characters : [] ,
+        userName : 'Cristian Initial'
     };
 
     render() {
@@ -16,11 +19,20 @@ class MyApp extends Component {
                     removeCharacter={this.removeCharacter}                
                 />
                 <Form  handleSubmit={this.handleSubmit}/>
+                <UserInput
+                 handleUserNameChanged={this.handleUserNameChanged}
+                 userName={this.state.userName}
+                 />
+                <UserOutput userName={this.state.userName}/>
             </div>
         );
     }
 
-    ;
+    handleUserNameChanged = (event) => {
+        this.setState({
+            userName : event.target.value
+        });
+    };
 
     removeCharacter = ( index ) => {       
         const { characters } = this.state;

@@ -35,7 +35,7 @@ class Form extends Component {
                 <input type="text" name="name" value={name} onChange={this.handleChange}/>
                 <label>Job</label>
                 <input type="text" name="job" value={job} onChange={this.handleChange}/>
-                <button type="button" class="btn btn-success" onClick={this.submitForm}> Add </button>
+                <button type="button" className="btn btn-success" onClick={this.submitForm}> Add </button>
             </form>
         );
     }
