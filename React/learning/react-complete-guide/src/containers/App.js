@@ -121,6 +121,10 @@ class App extends Component {
 
         return prevState;
     }
+
+    getSnapshotBeforeUpdate() {
+        
+    }
 }
 
 export default  withWrapped(App , myClasses.App);
