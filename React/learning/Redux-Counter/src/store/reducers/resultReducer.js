@@ -1,4 +1,4 @@
-import * as constants  from '../actions';
+import * as actionType  from '../actions/actionTypes';
 
 const initialState = {
     results: []
@@ -8,14 +8,13 @@ const initialState = {
 
 const resultsReducer = (state = initialState , action) => {   
     switch (action.type) {                
-        case constants.STORE_RESULT:
-            const newResults = [...state.results , action.payLoad.currentCounter];  
-            console.log('New Results', newResults)          ;
+        case actionType.STORE_RESULT:
+            const newResults = [...state.results , action.payLoad.currentCounter];              
             return {
                 ...state,
                 results: newResults
             }    
-        case constants.DELETE_RESULT:            
+        case actionType.DELETE_RESULT:            
             const myArray =  [...state.results];
             const index = action.payLoad.index;
             myArray.splice(index, 1);
