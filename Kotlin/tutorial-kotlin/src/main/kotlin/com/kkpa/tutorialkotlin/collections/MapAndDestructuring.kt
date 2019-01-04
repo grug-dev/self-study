@@ -1,5 +1,7 @@
 package com.kkpa.tutorialkotlin.collections
 
+import com.kkpa.tutorialkotlin.collections.map.ParamBuilder
+
 fun main(args: Array<String>) {
 
     val immutableMap = mapOf(1 to Car("green" , " Toyota" , 2015) ,
@@ -17,6 +19,13 @@ fun main(args: Array<String>) {
     )
     mutableMap.put(4, Car("black" , "Honda" , 2014))
     println(mutableMap.javaClass) // class java.util.LinkedHashMap
+
+
+    val cadenas = mutableMapOf("BranchName" to " ", "BuildNumber" to " ")
+    cadenas.keys.forEach { it.toUpperCase() }
+    println(cadenas)
+
+  ParamBuilder.ad
 
 
     // Hashmap

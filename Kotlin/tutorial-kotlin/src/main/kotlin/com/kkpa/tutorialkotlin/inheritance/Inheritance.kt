@@ -13,6 +13,7 @@ fun main(args: Array<String>) {
 // If we use abstract, its by default is open
 abstract class Printer (val modelName : String) {
 
+    protected val name : String = ""
 
     // Open keywork in order to allow override by childs. By default the functions are final and public.
     open fun printModel() = println("The model name is ${modelName} from SuperClass")
@@ -25,7 +26,7 @@ abstract class Printer (val modelName : String) {
 
 open class LaserPrinter (modelName: String) : Printer(modelName) {
 
-    override fun printModel() = println("The model name is ${modelName} from ChildClass")
+    override fun printModel() = println("The model name is ${modelName} from ChildClass with name: ${name}")
 
     // Child cannot override this function.
     final override fun bestSellingPrice(): Double = 123123.123
