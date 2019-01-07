@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import com.kkpa.tutorial.broker.rabbitmq.AnotherReceiver;
 import com.kkpa.tutorial.broker.rabbitmq.Receiver;
 
-@Configuration
+//@Configuration
 public class RabbitMQConfig {
 
   public final static String QUEUE_NAME = "kkpa-queue";
@@ -23,27 +23,27 @@ public class RabbitMQConfig {
   public static final String EXCHANGE_ROUTING_KEY = "foo.bar.";
 
 
-  @Bean
+  //@Bean
   Queue queue() {
     return new Queue(QUEUE_NAME, false);
   }
 
-  @Bean
+  //@Bean
   Queue queue2() {
     return new Queue(ANOTHER_QUEUE, false);
   }
 
-  @Bean
+  //@Bean
   TopicExchange exchange() {
     return new TopicExchange(topicExchangeName);
   }
 
-  @Bean
+  //@Bean
   Binding binding(Queue queue, TopicExchange exchange) {
     return BindingBuilder.bind(queue).to(exchange).with(EXCHANGE_ROUTING_KEY + ".#");
   }
 
-  @Bean
+  //@Bean
   SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
       MessageListenerAdapter listenerAdapter) {
     SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
@@ -53,7 +53,7 @@ public class RabbitMQConfig {
     return container;
   }
 
-  @Bean
+  //@Bean
   SimpleMessageListenerContainer container2(ConnectionFactory connectionFactory,
       MessageListenerAdapter listenerAdapter2) {
     SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
@@ -63,12 +63,12 @@ public class RabbitMQConfig {
     return container;
   }
 
-  @Bean
+  //@Bean
   MessageListenerAdapter listenerAdapter(Receiver receiver) {
     return new MessageListenerAdapter(receiver, "receiveMessage");
   }
 
-  @Bean
+  //@Bean
   MessageListenerAdapter listenerAdapter2(AnotherReceiver receiver) {
     return new MessageListenerAdapter(receiver, "receive");
   }
