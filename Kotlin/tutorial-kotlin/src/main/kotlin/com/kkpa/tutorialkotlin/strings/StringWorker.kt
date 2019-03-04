@@ -7,6 +7,7 @@ import java.util.*
 class StringWorker {
 
 
+
     fun verifyIsString ( msg : Any) : Boolean {
         return if (msg is String) true else false
     }
@@ -24,5 +25,6 @@ class StringWorker {
 
         return "$firstWord $secondWord"
     }
+
 
 }

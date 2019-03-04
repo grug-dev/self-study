@@ -8,6 +8,9 @@ fun main(args: Array<String>) {
     val emptylist = emptyList<String>()
     println(emptylist.javaClass) // class kotlin.collections.EmptyList
 
+    val new = emptylist.takeWhile { t -> t.equals("spring") }
+    println("New: ${new}")
+
     strings.also {
         println(it.javaClass) // class java.util.Arrays$ArrayList
     }
