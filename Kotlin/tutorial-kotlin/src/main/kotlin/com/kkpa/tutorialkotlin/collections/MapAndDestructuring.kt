@@ -1,8 +1,10 @@
 package com.kkpa.tutorialkotlin.collections
 
+
 fun main(args: Array<String>) {
 
-    val immutableMap = mapOf(1 to Car("green" , " Toyota" , 2015) ,
+    val immutableMap = mapOf(
+            1 to Car("green" , " Toyota" , 2015) ,
             2 to Car("red" , "Ford" , 2016) ,
             3 to Car("silver" , "Honda" , 2013)
     )
@@ -18,6 +20,10 @@ fun main(args: Array<String>) {
     mutableMap.put(4, Car("black" , "Honda" , 2014))
     println(mutableMap.javaClass) // class java.util.LinkedHashMap
 
+
+    val cadenas = mutableMapOf("BranchName" to " ", "BuildNumber" to " ")
+    cadenas.keys.forEach { it.toUpperCase() }
+    println(cadenas)
 
     // Hashmap
     val mutableHashMap =  hashMapOf(1 to Car("green" , " Toyota" , 2015) ,

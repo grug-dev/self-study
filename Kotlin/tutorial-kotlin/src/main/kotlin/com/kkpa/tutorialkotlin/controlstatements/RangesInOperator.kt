@@ -2,6 +2,10 @@ package com.kkpa.tutorialkotlin.controlstatements
 
 fun main(args: Array<String>) {
 
+    for ( i in 0..10) {
+        println(i)
+    }
+
     val backwardRange = 5.downTo(1)
     for ( i in backwardRange) {
         print("  ${i}") // 5,4,3,2,1

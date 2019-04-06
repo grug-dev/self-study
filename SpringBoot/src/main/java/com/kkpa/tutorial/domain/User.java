@@ -11,7 +11,6 @@ import lombok.Data;
 
 @Data
 @Entity
-@JsonFilter("UserAgeFilter")
 public class User implements Serializable {
 
 

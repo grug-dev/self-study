@@ -28,4 +28,8 @@ fun main(args: Array<String>) {
 
 
 
+    val myCar = mutableHashMap.filter { it.value.model == "Ford" }.map { it.value.color }.also {
+        it[0]
+    }
+
 }

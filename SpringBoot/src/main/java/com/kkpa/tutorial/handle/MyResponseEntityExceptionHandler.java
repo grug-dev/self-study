@@ -22,17 +22,29 @@ public class MyResponseEntityExceptionHandler extends ResponseEntityExceptionHan
 
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
   }
+  
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ExceptionResponse> handleGeneralException(Exception ex, WebRequest request) {
+    ExceptionResponse exceptionResponse = new ExceptionResponse();
+    exceptionResponse.setDate(LocalDate.now());
+    exceptionResponse.setMessage(ex.getMessage() + " - " + request.getDescription(false));
 
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+  }
+
+  /**
+   * Manage all validationAPI
+   
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
       HttpHeaders headers, HttpStatus status, WebRequest request) {
 
     ExceptionResponse exceptionResponse = new ExceptionResponse();
     exceptionResponse.setDate(LocalDate.now());
-    exceptionResponse.setMessage(ex.getMessage() + " - " + request.getDescription(false) + " - "
-        + ex.getBindingResult().toString());
+    exceptionResponse.setMessage(ex.getMessage() + " - "  + ex.getBindingResult().toString());
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 
   }
+  */
 
 }

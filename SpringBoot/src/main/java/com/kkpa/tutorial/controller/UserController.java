@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,132 +38,132 @@ import com.kkpa.tutorial.handle.UserNotFoundException;
 import com.kkpa.tutorial.repository.UserRepository;
 import com.kkpa.tutorial.service.UserService;
 
-@RestController(Mappings.URI_USER)
+@RestController
+@RequestMapping(Mappings.URI_USER)
 public class UserController {
 
-  private Logger log = LoggerFactory.getLogger(UserController.class);
+	private Logger log = LoggerFactory.getLogger(UserController.class);
 
-  private UserService userService;
+	private UserService userService;
 
-  private UserRepository userRepo;
+	private UserRepository userRepo;
 
-  @Autowired
-  private ApplicationContext appContext;
+	@Autowired
+	private ApplicationContext appContext;
 
-  public UserController(UserService userService, UserRepository userRepo) {
-    this.userService = userService;
-    this.userRepo = userRepo;
-  }
+	public UserController(UserService userService, UserRepository userRepo) {
+		this.userService = userService;
+		this.userRepo = userRepo;
+	}
 
-  @GetMapping("/")
-  public ResponseEntity<List<User>> getAll() {
-    List<User> allUsers = userRepo.findAll();
-    return ResponseEntity.ok(allUsers);
-  }
+	@GetMapping("/")
+	public ResponseEntity<List<User>> getAll() {
+		List<User> allUsers = userRepo.findAll();
+		return ResponseEntity.ok(allUsers);
+	}
 
-  @GetMapping("/{id}")
-  public ResponseEntity<Resource<MappingJacksonValue>> getUser(
-      @RequestHeader(name = HttpHeaders.ACCEPT) String accept, @PathVariable int id) {
-    User user = userService.getDomain(new User(id));
-    user.setName(user.getName() + accept);
+	@GetMapping("/{id}")
+	public ResponseEntity<Resource<MappingJacksonValue>> getUser(
+			@RequestHeader(name = HttpHeaders.ACCEPT) String accept, @PathVariable String id) {
+		User user = userService.getDomain(new User(Integer.parseInt(id)));
+		user.setName(user.getName() + accept);
 
-    produceMessage("User not found!  Broker");
+		produceMessage("User not found!  Broker");
 
-    if (user == null || user.getId() == null) {
-      throw new UserNotFoundException("The user" + id + "doesnt exists");
-    }
+		if (user == null || user.getId() == null) {
+			throw new UserNotFoundException("The user" + id + "doesnt exists");
+		}
 
-    Resource<MappingJacksonValue> resourceUser = createResourceHateOASofUser(user);
+		Resource<MappingJacksonValue> resourceUser = createResourceHateOASofUser(user);
 
-    ControllerLinkBuilder linkTo =
-        ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(this.getClass()).getAll());
+		ControllerLinkBuilder linkTo = ControllerLinkBuilder
+				.linkTo(ControllerLinkBuilder.methodOn(this.getClass()).getAll());
 
+		resourceUser.add(linkTo.withRel("all-users"));
 
+		return ResponseEntity.ok().body(resourceUser);
+	}
 
-    resourceUser.add(linkTo.withRel("all-users"));
+	private Resource<MappingJacksonValue> createResourceHateOASofUser(User user) {
+		// Dynamic Filtering
+		MappingJacksonValue mapping = new MappingJacksonValue(user);
+		SimpleBeanPropertyFilter propertyFilter = SimpleBeanPropertyFilter.filterOutAllExcept("age");
+		FilterProvider filterAge = new SimpleFilterProvider().addFilter("UserAgeFilter", propertyFilter);
+		mapping.setFilters(filterAge);
 
+		// HATEOAS
+		Resource<MappingJacksonValue> resourceUser = new Resource<MappingJacksonValue>(mapping);
 
-    return ResponseEntity.ok().body(resourceUser);
-  }
+		return resourceUser;
+	}
 
-  private Resource<MappingJacksonValue> createResourceHateOASofUser(User user) {
-    // Dynamic Filtering
-    MappingJacksonValue mapping = new MappingJacksonValue(user);
-    SimpleBeanPropertyFilter propertyFilter = SimpleBeanPropertyFilter.filterOutAllExcept("age");
-    FilterProvider filterAge =
-        new SimpleFilterProvider().addFilter("UserAgeFilter", propertyFilter);
-    mapping.setFilters(filterAge);
+	@GetMapping("/caching/{id}")
+	public ResponseEntity<Resource<MappingJacksonValue>> getUserCatched(@PathVariable String id) {
+		log.info("Getting infor about user: " + id);
+		User user = userService.getDomain(new User(Integer.parseInt(id)));
 
-    // HATEOAS
-    Resource<MappingJacksonValue> resourceUser = new Resource<MappingJacksonValue>(mapping);
+		Resource<MappingJacksonValue> resourceUser = createResourceHateOASofUser(user);
 
-    return resourceUser;
-  }
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS)).body(resourceUser);
+	}
 
-  @GetMapping("/caching/{id}")
-  public ResponseEntity<Resource<MappingJacksonValue>> getUserCatched(@PathVariable int id) {
-    log.info("Getting infor about user: " + id);
-    User user = userService.getDomain(new User(id));
+	@PostMapping
+	public ResponseEntity<User> createUser(@Valid @RequestBody User userDTO) throws URISyntaxException {
+		String msg = "Creating an User..: " + userDTO.toString();
+		
+		
 
-    Resource<MappingJacksonValue> resourceUser = createResourceHateOASofUser(user);
+		userDTO = userService.create(userDTO);
+		URI location = new URI("/user/" + userDTO.getId());
 
-    return ResponseEntity.ok().cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS))
-        .body(resourceUser);
-  }
+		location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userDTO.getId())
+				.toUri();
 
-  @PostMapping("/")
-  public ResponseEntity<User> createUser(@Valid @RequestBody User userDTO)
-      throws URISyntaxException {
-    String msg = "Creating an User..: " + userDTO.toString();
+		produceMessage(msg);
 
-    userDTO = userService.create(userDTO);
-    URI location = new URI("/user/" + userDTO.getId());
+		return ResponseEntity.created(location).body(userDTO);
 
-    location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-        .buildAndExpand(userDTO.getId()).toUri();
+	}
 
-    produceMessage(msg);
+	@PutMapping("/{id}")
+	public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User user) {
+		user.setId(Long.parseLong(id));
+		User newUser = userRepo.save(user);
+		return ResponseEntity.accepted().body(newUser);
+	}
 
-    return ResponseEntity.created(location).body(userDTO);
+	@PatchMapping("/{id}")
+	public ResponseEntity<User> patchUser(@PathVariable String id, @RequestBody User user) {
+		user.setId(Long.parseLong(id));
+		User newUser = userRepo.save(user);
+		return ResponseEntity.accepted().body(newUser);
+	}
 
-  }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+		userRepo.delete(new User(Long.parseLong(id)));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+	}
 
-  @PutMapping("/{id}")
-  public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User user) {
-    user.setId(id);
-    User newUser = userRepo.save(user);
-    return ResponseEntity.accepted().body(newUser);
-  }
+	@GetMapping(value = "/sorting")
+	public String sorting(@RequestParam("sortedBy") String sortedBy) {
+		System.out.println("Sorting By: " + sortedBy);
+		return "Applying Sorting! By: " + sortedBy;
+	}
 
-  @PatchMapping("/{id}")
-  public ResponseEntity<User> patchUser(@PathVariable long id, @RequestBody User user) {
-    user.setId(id);
-    User newUser = userRepo.save(user);
-    return ResponseEntity.accepted().body(newUser);
-  }
+	@GetMapping(value = "/pagination")
+	public String sorting(@RequestParam("limit") int limit, @RequestParam("offset") int offset) {		
+		return "Pagination with limit: " + limit + "offset: " + offset;
+	}
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteUser(@PathVariable long id) {
-    userRepo.delete(new User(id));
-    return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-  }
-
-  @GetMapping(value = "/sorting")
-  public String sorting(@RequestParam("sortedBy") String sortedBy) {
-    System.out.println("Sorting By: " + sortedBy);
-    return "Applying Sorting!";
-  }
-
-  @GetMapping(value = "/pagination")
-  public String sorting(@RequestParam("limit") int limit, @RequestParam("offset") int offset) {
-    System.out.println("Pagination with limit: " + limit + "offset: " + offset);
-    return "Applying Sorting!";
-  }
-
-
-  void produceMessage(String message) {
-    Producer producer = appContext.getBean(Producer.class);
-    producer.sendMessage(message);
-  }
+	void produceMessage(String message) {
+		try {
+			Producer producer = appContext.getBean(Producer.class);
+			producer.sendMessage(message);
+		}catch (Exception e) {
+			
+		}
+		
+	}
 
 }

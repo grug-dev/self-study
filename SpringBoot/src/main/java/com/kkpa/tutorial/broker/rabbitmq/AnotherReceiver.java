@@ -5,8 +5,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import com.kkpa.tutorial.config.RabbitMQConfig;
 
-@Component
-@RabbitListener(queues = RabbitMQConfig.ANOTHER_QUEUE)
+//@Component
+//@RabbitListener(queues = RabbitMQConfig.ANOTHER_QUEUE)
 public class AnotherReceiver {
 
 
