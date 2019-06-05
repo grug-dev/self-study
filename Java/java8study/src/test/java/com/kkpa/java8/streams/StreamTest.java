@@ -77,5 +77,10 @@ public class StreamTest {
 
     assertThat(10, is(equalTo(personsMap.size())));
   }
+  
+  @Test
+  public void streamSequentialAndParalell() {
+    streamService.streamSequential(persons);   
+  }
 
 }

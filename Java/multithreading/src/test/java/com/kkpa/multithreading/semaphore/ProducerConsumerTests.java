@@ -18,7 +18,7 @@ import com.kkpa.multithreading.semaphores.Producer;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class listProducerConsumerTests {
+public class ProducerConsumerTests {
 
 	Semaphore mutex = new Semaphore(1);
 

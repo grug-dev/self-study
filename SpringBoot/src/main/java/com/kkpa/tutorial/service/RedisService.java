@@ -16,9 +16,9 @@ public class RedisService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    @Qualifier("redisUserTemplate")
-    private RedisTemplate<String, String> redisUserTemplate;
+    //@Autowired
+    //@Qualifier("redisTemplate")
+    private RedisTemplate<String, Object> redisTemplate;
 
 
     public Map<String, Object> saveDataInRedis(String id, Object obj) {
@@ -30,7 +30,7 @@ public class RedisService {
         } catch (JsonProcessingException jpe) {
 
         }
-        redisUserTemplate.opsForValue().set(id, jsonObj);
+        redisTemplate.opsForValue().set(id, jsonObj);
         result.put("isSuccess", true);
         result.put("massage", "Data saved succesfully in redis");
         return result;

@@ -1,10 +1,16 @@
 package com.kkpa.tutorialkotlin.dates
 
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 fun main(args: Array<String>) {
+    val today = Date.from(Instant.now())
+    val monthAgo = Date.from(today.toInstant().minus(31, ChronoUnit.DAYS))
+    println("Today: $today - Month Ago: $monthAgo")
+
+
     val delay = getMinutes(10)
 
     println("Instant EPOCH ${Instant.EPOCH} - Now: ${Instant.now()}")

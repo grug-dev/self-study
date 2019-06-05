@@ -1,6 +1,29 @@
 package com.kkpa.tutorialkotlin.collections
 
+enum class FraudFlagType {
+    APPLICATION,
+    ACCOUNT_TAKEOVER,
+    ACH,
+    APEX_DO_NO_BUSINESS,
+    APEX_REJECTED,
+    CHECK,
+    DEBIT_CARD,
+    ID_THEFT,
+    SYNTHETIC_ID,
+    WIRE
+}
+
+
 fun main(args: Array<String>) {
+
+    val confirmedFlags = arrayListOf<String>("ACH")
+    val confirmedString = FraudFlagType.values().map { flag -> flag.name }.toList()
+
+
+
+    println(confirmedFlags.intersect(FraudFlagType.values().toList()).any())
+    println(confirmedFlags.intersect(confirmedString).any())
+
 
     val colors = arrayListOf("Yellow" , "Red" , "Blue", "Yellow")
     val seasons = arrayListOf("Fall" , "Summer" , "Spring" , "Spring")
@@ -54,6 +77,7 @@ fun main(args: Array<String>) {
 
     // Sort By Year
     println("Sorted By Year " + mutableHashMap.values.sortedBy { it.year })
+
 
 
 }

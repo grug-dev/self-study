@@ -22,7 +22,7 @@ public class RestTemplateController {
 
 	private Logger log = LoggerFactory.getLogger(RestTemplateController.class);
 
-	@Autowired
+	//@Autowired
 	private RestTemplate rest;
 
 	@GetMapping("/sortingUserController")

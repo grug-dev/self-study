@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 import lombok.NonNull;
 
-@Data
 @Component
 public class EventDTO {
 
@@ -14,5 +13,27 @@ public class EventDTO {
         
     @Autowired
     private LocationDTO location;
+
+	public EventDTO(int id2) {
+		this.id = id2;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public LocationDTO getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationDTO location) {
+		this.location = location;
+	}
+    
+    
 
 }

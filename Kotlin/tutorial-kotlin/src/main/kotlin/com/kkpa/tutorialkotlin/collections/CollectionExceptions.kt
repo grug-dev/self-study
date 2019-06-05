@@ -1,6 +1,9 @@
 package com.kkpa.tutorialkotlin.collections
 
+import com.kkpa.tutorialkotlin.lambdas.Person
 import java.lang.Exception
+
+
 
 fun main(args: Array<String>) {
     val mycollection = arrayListOf<String>()
@@ -28,6 +31,10 @@ fun main(args: Array<String>) {
     val b = mycollection.first { it == "Hello" }
     println("Value ${b}")
 
+
+    val persons = mutableListOf<Person>()
+    persons.add(Person("cristian", 33))
+    persons.add(Person("cristian", 32))
 
 
 

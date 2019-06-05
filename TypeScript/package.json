@@ -4,7 +4,9 @@
   "private": true,
   "description": "This project has built with typescript and ts-node.",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "moment": "^2.24.0"
+  },
   "devDependencies": {
     "ts-node": "^8.0.3",
     "typescript": "^3.4.1"

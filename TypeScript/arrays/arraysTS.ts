@@ -35,3 +35,6 @@ const sumAges = (students: Array<Person>) => {
 };
 
 sumAges(students);
+
+
+

@@ -1,5 +1,5 @@
 # Swagger
-http://localhost:9999/mytutorial/swagger-ui.html
+http://localhost:8888/mytutorial/swagger-ui.html
 
 # Database
 This project use H2 database integrated. (Added as dependency)

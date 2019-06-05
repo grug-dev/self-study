@@ -5,7 +5,6 @@ import java.time.ZoneId
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import jdk.nashorn.internal.objects.NativeArray.forEach
-import org.apache.catalina.util.ConcurrentDateFormat.GMT
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.concurrent.TimeUnit
